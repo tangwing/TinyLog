@@ -39,7 +39,12 @@ namespace tl
 
         //Print log
         template<typename T>
-        friend TinyLog& operator <<(TinyLog& os,  const T& content);
+        ostream& operator <<(const T& content)
+        {
+            if(_iLogLevel >= TinyLog::GlobalLogLevel())
+                (*(out))<<content;
+            return *out;
+        }
 
         //The global level which can be used to enable/disable log levels.
         //I use this way to avoid creating a cpp file.
@@ -60,13 +65,6 @@ namespace tl
         ostream* out;
     };
 
-    template<typename T>
-    TinyLog& operator <<(TinyLog& os,  const T& content)
-    {
-        if(os._iLogLevel >= TinyLog::GlobalLogLevel())
-            (*(os.out))<<content;
-        return os;
-    }
 }
 
 #endif
