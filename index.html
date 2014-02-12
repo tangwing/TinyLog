@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <title>Tinylog by tangwing</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Tinylog</h1>
+        <h2>A header-only C++ library for basic logging!</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/tangwing/TinyLog/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/tangwing/TinyLog/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/tangwing/TinyLog" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h3>
+<a name="welcome-to-tinylog-homepage" class="anchor" href="#welcome-to-tinylog-homepage"><span class="octicon octicon-link"></span></a>Welcome to TinyLog HomePage.</h3>
+
+<p>TinyLog is a header-only C++ library for basic logging. If you have the following feelings like me, then TinyLog may be your choice:</p>
+
+<ul>
+<li>don't want to use "cout" for logging info in Console.</li>
+<li>don't want to use a splendid large logging library which can do all kinds of things that you don't need.</li>
+<li>just want a tiny logging tool having different logging level, can be easily turned on/off or redirected to a file.</li>
+</ul><h3>
+<a name="basic-use-case-there-is-no-complex-use-case-because-im-tiny" class="anchor" href="#basic-use-case-there-is-no-complex-use-case-because-im-tiny"><span class="octicon octicon-link"></span></a>Basic use case (There is no complex use case because I'm Tiny!)</h3>
+
+<div class="highlight highlight-c++"><pre><span class="cp">#include "TinyLog.h"</span>
+<span class="cp">#include &lt;iomanip&gt;</span>
+
+<span class="n">tl</span><span class="o">::</span><span class="n">TinyLog</span> <span class="n">debug</span><span class="p">(</span><span class="n">tl</span><span class="o">::</span><span class="n">TinyLog</span><span class="o">::</span><span class="n">DEBUG</span><span class="p">);</span>
+<span class="n">tl</span><span class="o">::</span><span class="n">TinyLog</span> <span class="n">warn</span><span class="p">(</span><span class="n">tl</span><span class="o">::</span><span class="n">TinyLog</span><span class="o">::</span><span class="n">WARNING</span><span class="p">);</span>
+<span class="n">tl</span><span class="o">::</span><span class="n">TinyLog</span> <span class="n">err</span><span class="p">(</span><span class="n">tl</span><span class="o">::</span><span class="n">TinyLog</span><span class="o">::</span><span class="n">ERROR</span><span class="p">);</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"This is a debug info.</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+    <span class="c1">//Set global log level to WARNING</span>
+    <span class="n">tl</span><span class="o">::</span><span class="n">TinyLog</span><span class="o">::</span><span class="n">GlobalLogLevel</span><span class="p">(</span><span class="n">tl</span><span class="o">::</span><span class="n">TinyLog</span><span class="o">::</span><span class="n">WARNING</span><span class="p">);</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span><span class="s">"You cannot see me! I'm not a warning!</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+    <span class="n">warn</span> <span class="o">&lt;&lt;</span><span class="s">"I'm a warning! How are you?"</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">err</span> <span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">setfill</span><span class="p">(</span><span class="sc">'-'</span><span class="p">)</span>
+        <span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">setw</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span>
+        <span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">left</span>
+        <span class="o">&lt;&lt;</span><span class="s">"Don't miss me, I'm an error!"</span><span class="p">;</span>
+
+    <span class="c1">//Log to file</span>
+    <span class="n">ofstream</span> <span class="n">logfile</span><span class="p">(</span><span class="s">"log.txt"</span><span class="p">);</span>
+    <span class="n">tl</span><span class="o">::</span><span class="n">TinyLog</span> <span class="n">filelog</span><span class="p">(</span><span class="n">tl</span><span class="o">::</span><span class="n">TinyLog</span><span class="o">::</span><span class="n">INFO</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">logfile</span><span class="p">);</span>
+    <span class="n">filelog</span><span class="o">&lt;&lt;</span><span class="s">"This msg goes to file!"</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
